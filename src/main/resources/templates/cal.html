@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계산기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .calculator {
+            background: #2c3e50;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .title {
+            text-align: center;
+            color: #ecf0f1;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .display {
+            background: #34495e;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: right;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .display input {
+            background: transparent;
+            border: none;
+            color: #ecf0f1;
+            font-size: 2.5rem;
+            width: 100%;
+            text-align: right;
+            outline: none;
+            font-weight: 300;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .btn {
+            background: #34495e;
+            border: none;
+            border-radius: 15px;
+            color: #ecf0f1;
+            font-size: 1.5rem;
+            font-weight: 600;
+            height: 70px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            background: #4a5f7a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn.operator {
+            background: #e74c3c;
+        }
+
+        .btn.operator:hover {
+            background: #c0392b;
+        }
+
+        .btn.equals {
+            background: #27ae60;
+        }
+
+        .btn.equals:hover {
+            background: #229954;
+        }
+
+        .btn.clear {
+            background: #f39c12;
+        }
+
+        .btn.clear:hover {
+            background: #e67e22;
+        }
+
+        .btn.zero {
+            grid-column: span 2;
+        }
+
+        .history {
+            background: #34495e;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .history h3 {
+            color: #ecf0f1;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .history-item {
+            color: #bdc3c7;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            padding: 5px;
+            background: #2c3e50;
+            border-radius: 5px;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .calculator {
+                padding: 20px;
+            }
+            
+            .display input {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                height: 60px;
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1 class="title">계산기</h1>
+        
+        <!-- 계산 결과 표시 영역 -->
+        <div class="display">
+            <input type="text" id="display" value="0" readonly>
+        </div>
+        
+        <!-- 계산기 버튼들 -->
+        <div class="buttons">
+            <button class="btn clear" type="button" data-action="clear">C</button>
+            <button class="btn clear" type="button" data-action="delete">⌫</button>
+            <button class="btn operator" type="button" data-action="operator" data-value="/">/</button>
+            <button class="btn operator" type="button" data-action="operator" data-value="*">×</button>
+            
+            <button class="btn" type="button" data-action="number" data-value="7">7</button>
+            <button class="btn" type="button" data-action="number" data-value="8">8</button>
+            <button class="btn" type="button" data-action="number" data-value="9">9</button>
+            <button class="btn operator" type="button" data-action="operator" data-value="-">-</button>
+            
+            <button class="btn" type="button" data-action="number" data-value="4">4</button>
+            <button class="btn" type="button" data-action="number" data-value="5">5</button>
+            <button class="btn" type="button" data-action="number" data-value="6">6</button>
+            <button class="btn operator" type="button" data-action="operator" data-value="+">+</button>
+            
+            <button class="btn" type="button" data-action="number" data-value="1">1</button>
+            <button class="btn" type="button" data-action="number" data-value="2">2</button>
+            <button class="btn" type="button" data-action="number" data-value="3">3</button>
+            <button class="btn equals" type="button" data-action="calculate">=</button>
+            
+            <button class="btn zero" type="button" data-action="number" data-value="0">0</button>
+            <button class="btn" type="button" data-action="number" data-value=".">.</button>
+        </div>
+
+        <!-- 계산 히스토리 영역 -->
+        <div class="history">
+            <h3>계산 히스토리</h3>
+            <div id="historyList">
+                <!-- 계산 기록이 여기에 표시됩니다 -->
+            </div>
+        </div>
+
+        <!-- 자바 백엔드 연동을 위한 숨겨진 폼 -->
+        <div class="form-container">
+            <form id="calculatorForm" method="POST" action="/api/calculate">
+                <input type="hidden" id="firstNumber" name="firstNumber" value="">
+                <input type="hidden" id="operator" name="operator" value="">
+                <input type="hidden" id="secondNumber" name="secondNumber" value="">
+                <input type="hidden" id="result" name="result" value="">
+            </form>
+        </div>
+    </div>
+
+    <!-- 자바 백엔드 연동을 위한 메타 정보 -->
+    <div style="display: none;">
+        <!-- API 엔드포인트 정보 -->
+        <div id="apiInfo">
+            <span data-endpoint="/api/calculate">계산 API</span>
+            <span data-endpoint="/api/history">히스토리 API</span>
+            <span data-endpoint="/api/clear">초기화 API</span>
+        </div>
+        
+        <!-- 요청 데이터 구조 예시 -->
+        <div id="requestStructure">
+            <!-- POST /api/calculate -->
+            <!-- { "firstNumber": 5, "operator": "+", "secondNumber": 3 } -->
+            <!-- Response: { "result": 8, "success": true, "message": "계산 완료" } -->
+        </div>
+    </div>
+</body>
+</html>

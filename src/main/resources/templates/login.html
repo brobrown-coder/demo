@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #34495e;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .login-button {
+            width: 100%;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            background: linear-gradient(135deg, #2980b9 0%, #1f4e79 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="title">로그인</h1>
+        
+        <form id="loginForm" method="GET" action="/main">
+            <div class="form-group">
+                <label for="username">아이디</label>
+                <input type="text" id="username" name="username" placeholder="아이디를 입력하세요" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+            </div>
+            
+            <button type="submit" class="login-button">로그인</button>
+        </form>
+    </div>
+
+    <!-- 자바 백엔드 연동을 위한 숨겨진 폼 -->
+    <div class="form-container">
+        <form id="hiddenForm" method="POST" action="/api/login">
+            <input type="hidden" id="hiddenUsername" name="username" value="">
+            <input type="hidden" id="hiddenPassword" name="password" value="">
+        </form>
+    </div>
+
+    <!-- 자바 백엔드 연동을 위한 메타 정보 -->
+    <div style="display: none;">
+        <!-- API 엔드포인트 정보 -->
+        <div id="apiInfo">
+            <span data-endpoint="/api/login">로그인 API</span>
+            <span data-endpoint="/api/logout">로그아웃 API</span>
+        </div>
+        
+        <!-- 요청 데이터 구조 예시 -->
+        <div id="requestStructure">
+            <!-- POST /api/login -->
+            <!-- { "username": "admin", "password": "password123" } -->
+            <!-- Response: { "success": true, "message": "로그인 성공", "token": "jwt_token" } -->
+        </div>
+    </div>
+</body>
+</html>
