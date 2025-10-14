@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.home;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +40,7 @@ public class HomeController {
 	public String nanumPage() {
 		return "contents/calculator/nanum"; // resolves to templates/cal.html
 	}
+
 }
 
 
