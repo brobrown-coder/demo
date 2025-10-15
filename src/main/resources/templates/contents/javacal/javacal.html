@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자바 계산기</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calculator-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 400px;
+            max-width: 90vw;
+        }
+
+        .title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .display {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: right;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            word-break: break-all;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        .btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.number {
+            background: #f8f9fa;
+        }
+
+        .btn.operator {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .btn.operator:hover {
+            background: #5a6fd8;
+        }
+
+        .btn.equals {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .btn.equals:hover {
+            background: #218838;
+        }
+
+        .btn.clear {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .btn.clear:hover {
+            background: #c82333;
+        }
+
+        .btn.zero {
+            grid-column: span 2;
+        }
+
+        .result-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .result-display {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .history {
+            margin-top: 20px;
+        }
+
+        .history-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .history-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1 class="title">자바 계산기</h1>
+        
+        <!-- 계산 결과 표시 영역 -->
+        <div class="display" id="display">0</div>
+        
+        <!-- 계산기 버튼들 -->
+        <div class="buttons">
+            <button class="btn clear" type="button" data-action="clear">C</button>
+            <button class="btn clear" type="button" data-action="delete">⌫</button>
+            <button class="btn operator" type="button" data-action="operator" data-value="/">/</button>
+            <button class="btn operator" type="button" data-action="operator" data-value="*">×</button>
+            
+            <button class="btn number" type="button" data-action="number" data-value="7">7</button>
+            <button class="btn number" type="button" data-action="number" data-value="8">8</button>
+            <button class="btn number" type="button" data-action="number" data-value="9">9</button>
+            <button class="btn operator" type="button" data-action="operator" data-value="-">-</button>
+            
+            <button class="btn number" type="button" data-action="number" data-value="4">4</button>
+            <button class="btn number" type="button" data-action="number" data-value="5">5</button>
+            <button class="btn number" type="button" data-action="number" data-value="6">6</button>
+            <button class="btn operator" type="button" data-action="operator" data-value="+">+</button>
+            
+            <button class="btn number" type="button" data-action="number" data-value="1">1</button>
+            <button class="btn number" type="button" data-action="number" data-value="2">2</button>
+            <button class="btn number" type="button" data-action="number" data-value="3">3</button>
+            <button class="btn equals" type="button" data-action="calculate">=</button>
+            
+            <button class="btn number zero" type="button" data-action="number" data-value="0">0</button>
+            <button class="btn number" type="button" data-action="number" data-value=".">.</button>
+        </div>
+
+        <!-- 자바 백엔드 연동을 위한 숨겨진 폼 -->
+        <div style="display: none;">
+            <form id="calculatorForm" method="GET" action="/javacalculate">
+                <input type="hidden" id="firstNumber" name="firstNumber" value="">
+                <input type="hidden" id="operator" name="operator" value="">
+                <input type="hidden" id="secondNumber" name="secondNumber" value="">
+            </form>
+        </div>
+
+        <!-- 결과 표시 영역 -->
+        <div class="result-section">
+            <div class="result-title">계산 결과</div>
+            <div class="result-display" id="resultDisplay">계산 결과가 여기에 표시됩니다</div>
+            <div class="loading" id="loading">계산 중...</div>
+            <div class="error" id="error"></div>
+        </div>
+
+        <!-- 계산 히스토리 -->
+        <div class="history">
+            <div class="history-title">계산 히스토리</div>
+            <div id="historyList">
+                <div class="history-item">아직 계산 기록이 없습니다.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 계산기 상태 관리
+        let currentExpression = '';
+        let calculationHistory = [];
+
+        // DOM 요소들
+        const display = document.getElementById('display');
+        const resultDisplay = document.getElementById('resultDisplay');
+        const historyList = document.getElementById('historyList');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+
+        // 초기화
+        function init() {
+            updateDisplay();
+            updateHistory();
+        }
+
+        // 디스플레이 업데이트
+        function updateDisplay() {
+            display.textContent = currentExpression || '0';
+        }
+
+        // 히스토리 업데이트
+        function updateHistory() {
+            historyList.innerHTML = '';
+            if (calculationHistory.length === 0) {
+                historyList.innerHTML = '<div class="history-item">아직 계산 기록이 없습니다.</div>';
+                return;
+            }
+            
+            calculationHistory.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <strong>${item.expression}</strong> = <span style="color: #28a745;">${item.result}</span>
+                    <small style="color: #999; float: right;">${item.time}</small>
+                `;
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        // 히스토리에 계산 결과 추가
+        function addToHistory(expression, result) {
+            const now = new Date();
+            const time = now.toLocaleTimeString('ko-KR', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            
+            const historyItem = {
+                expression: expression,
+                result: result,
+                time: time
+            };
+            
+            calculationHistory.unshift(historyItem);
+            
+            // 히스토리가 너무 길어지면 오래된 것부터 제거 (최대 10개)
+            if (calculationHistory.length > 10) {
+                calculationHistory = calculationHistory.slice(0, 10);
+            }
+            
+            updateHistory();
+        }
+
+        // 숫자 입력 처리
+        function inputNumber(num) {
+            if (currentExpression === '0' && num !== '.') {
+                currentExpression = num;
+            } else {
+                currentExpression += num;
+            }
+            updateDisplay();
+            hideError();
+        }
+
+        // 소수점 입력 처리
+        function inputDecimal() {
+            if (currentExpression === '' || currentExpression.endsWith('+') || currentExpression.endsWith('-') || 
+                currentExpression.endsWith('*') || currentExpression.endsWith('/')) {
+                currentExpression += '0.';
+            } else if (!currentExpression.includes('.')) {
+                currentExpression += '.';
+            }
+            updateDisplay();
+            hideError();
+        }
+
+        // 연산자 입력 처리
+        function inputOperator(op) {
+            if (currentExpression !== '' && !currentExpression.endsWith('+') && !currentExpression.endsWith('-') && 
+                !currentExpression.endsWith('*') && !currentExpression.endsWith('/')) {
+                currentExpression += op;
+                updateDisplay();
+                hideError();
+            }
+        }
+
+        // 계산 수행 (자바로 전송)
+        function calculate() {
+            if (currentExpression !== '') {
+                // 로딩 표시
+                showLoading();
+                hideError();
+                
+                // 계산식 파싱하여 분리
+                const parsed = parseExpression(currentExpression);
+                if (parsed) {
+                    // 자바로 분리된 값들 전송
+                    document.getElementById('firstNumber').value = parsed.firstNumber;
+                    document.getElementById('operator').value = parsed.operator;
+                    document.getElementById('secondNumber').value = parsed.secondNumber;
+                    
+                    // 폼 제출
+                    document.getElementById('calculatorForm').submit();
+                } else {
+                    hideLoading();
+                    showError('유효하지 않은 계산식입니다.');
+                }
+            }
+        }
+
+        // 계산식 파싱 함수
+        function parseExpression(expression) {
+            // 공백 제거
+            expression = expression.replace(/\s+/g, '');
+            
+            // 연산자 찾기
+            const operators = ['+', '-', '*', '/'];
+            let operator = null;
+            let operatorIndex = -1;
+            
+            for (const op of operators) {
+                const index = expression.indexOf(op);
+                if (index > 0 && index < expression.length - 1) {
+                    operator = op;
+                    operatorIndex = index;
+                    break;
+                }
+            }
+            
+            if (operator === null) {
+                return null;
+            }
+            
+            // 숫자 추출
+            const firstNumber = expression.substring(0, operatorIndex);
+            const secondNumber = expression.substring(operatorIndex + 1);
+            
+            return {
+                firstNumber: firstNumber,
+                operator: operator,
+                secondNumber: secondNumber
+            };
+        }
+
+        // 초기화
+        function clear() {
+            currentExpression = '';
+            updateDisplay();
+            resultDisplay.textContent = '계산 결과가 여기에 표시됩니다';
+            hideError();
+        }
+
+        // 백스페이스
+        function backspace() {
+            if (currentExpression.length > 0) {
+                currentExpression = currentExpression.slice(0, -1);
+                updateDisplay();
+                hideError();
+            }
+        }
+
+        // 로딩 표시
+        function showLoading() {
+            loading.style.display = 'block';
+            resultDisplay.style.display = 'none';
+        }
+
+        function hideLoading() {
+            loading.style.display = 'none';
+            resultDisplay.style.display = 'flex';
+        }
+
+        // 에러 표시
+        function showError(message) {
+            error.textContent = message;
+            error.style.display = 'block';
+        }
+
+        function hideError() {
+            error.style.display = 'none';
+        }
+
+        // 버튼 클릭 이벤트 처리
+        document.addEventListener('click', function(e) {
+            const button = e.target;
+            const action = button.getAttribute('data-action');
+            const value = button.getAttribute('data-value');
+
+            if (action === 'number') {
+                if (value === '.') {
+                    inputDecimal();
+                } else {
+                    inputNumber(value);
+                }
+            } else if (action === 'operator') {
+                inputOperator(value);
+            } else if (action === 'calculate') {
+                calculate();
+            } else if (action === 'clear') {
+                clear();
+            } else if (action === 'delete') {
+                backspace();
+            }
+        });
+
+        // 키보드 입력 처리
+        document.addEventListener('keydown', function(e) {
+            const key = e.key;
+            
+            if (key >= '0' && key <= '9') {
+                inputNumber(key);
+            } else if (key === '.') {
+                inputDecimal();
+            } else if (['+', '-', '*', '/'].includes(key)) {
+                inputOperator(key);
+            } else if (key === 'Enter' || key === '=') {
+                calculate();
+            } else if (key === 'Escape' || key === 'c' || key === 'C') {
+                clear();
+            } else if (key === 'Backspace') {
+                backspace();
+            }
+        });
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

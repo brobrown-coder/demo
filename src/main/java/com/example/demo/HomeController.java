@@ -1,4 +1,4 @@
-package com.example.demo.home;
+package com.example.demo;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,13 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
 	@GetMapping("/")
-	public String loginPage() {
-		return "index"; // resolves to templates/login.html via Thymeleaf
-	}
-
-	@GetMapping("/login")
-	public String mainPage() {
-		return "auth/login"; // resolves to templates/main.html
+	public String homePage() {
+		return "index"; // resolves to templates/index.html via Thymeleaf
 	}
 
 	@GetMapping("/cal")
@@ -41,6 +36,10 @@ public class HomeController {
 		return "contents/calculator/nanum"; // resolves to templates/cal.html
 	}
 
+	@GetMapping("/login")
+	public String loginPage() {
+		return "auth/login"; // resolves to templates/auth/login.html
+	}
 }
 
 
