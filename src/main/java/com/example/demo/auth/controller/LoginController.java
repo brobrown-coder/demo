@@ -16,11 +16,11 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-
     @GetMapping("/logincontroller")
-    public String loginPage(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password ) {
+    public String loginPage(@RequestParam(name = "username") String username,
+            @RequestParam(name = "password") String password) {
         System.out.println("logincontroller로 들어옴");
-        System.out.println("화면에서 컨트롤러로 전달된 아이디:"+ username);
+        System.out.println("화면에서 컨트롤러로 전달된 아이디:" + username);
         System.out.println("화면에서 컨트롤러로 전달된 비밀번호:" + password);
 
         LoginDTO loginDTO = new LoginDTO();

@@ -11,4 +11,6 @@ public class LoginVO {
     public String getPassword() {
         return password;
     }
+
+    
 }
