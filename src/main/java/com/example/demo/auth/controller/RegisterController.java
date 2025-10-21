@@ -119,11 +119,12 @@ public class RegisterController implements CommandLineRunner {
     private Map<String, String> createPassengerMap(String[] headers, String[] values) {
         Map<String, String> passengerMap = new LinkedHashMap<>();
 
-        for (int i = 0; i < headers.length && i < values.length; i++) {
+        int minLength = Math.min(headers.length, values.length);
+        java.util.stream.IntStream.range(0, minLength).forEach(i -> {
             String key = headers[i].replaceAll("\"", "").trim();
             String value = values[i].replaceAll("\"", "").trim();
             passengerMap.put(key, value);
-        }
+        });
 
         return passengerMap;
     }
@@ -165,9 +166,7 @@ public class RegisterController implements CommandLineRunner {
         boolean inQuotes = false;
         StringBuilder current = new StringBuilder();
 
-        for (int i = 0; i < line.length(); i++) {
-            char c = line.charAt(i);
-
+        for (char c : line.toCharArray()) {
             if (c == '"') {
                 inQuotes = !inQuotes;
             } else if (c == ',' && !inQuotes) {
