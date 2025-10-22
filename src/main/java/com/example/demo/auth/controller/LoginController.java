@@ -18,7 +18,7 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    @GetMapping("/logincontroller")
+    @GetMapping("/logincheck")
     public String loginPage(@RequestParam(name = "username") String username,
             @RequestParam(name = "password") String password,
             Model model) {
