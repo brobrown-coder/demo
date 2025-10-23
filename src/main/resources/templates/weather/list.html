@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌤️ 기상 데이터 목록</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            border: 1px solid #e9ecef;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #4a90e2;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .summary {
+            background: #f8f9fa;
+            padding: 25px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .summary h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .summary-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .summary-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .summary-item .label {
+            font-weight: bold;
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .summary-item .value {
+            font-size: 1.5em;
+            color: #495057;
+            font-weight: bold;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        .data-table th {
+            background: #4a90e2;
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .data-table td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 0.85em;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .data-table tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        .temperature {
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .temp-high {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .temp-low {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .temp-avg {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .precipitation {
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .rain {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .no-rain {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .status-message {
+            padding: 20px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .refresh-btn {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            margin: 20px;
+        }
+
+        .refresh-btn:hover {
+            background: #357abd;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 50px;
+            color: #6c757d;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .data-table {
+                font-size: 0.8em;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 8px 5px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌤️ 기상 데이터 목록</h1>
+            <p>실시간 기상 정보 및 통계</p>
+        </div>
+
+        <div class="summary">
+            <h3>📊 데이터 요약</h3>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="label">총 데이터 수</div>
+                    <div class="value" th:text="${weatherList != null ? #lists.size(weatherList) : 0}">0</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">평균 기온</div>
+                    <div class="value" th:text="${weatherList != null and #lists.size(weatherList) > 0 ? 
+                        weatherList[0].averageTemperature + '℃' : 'N/A'}">N/A</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">최고 기온</div>
+                    <div class="value" th:text="${weatherList != null and #lists.size(weatherList) > 0 ? 
+                        weatherList[0].maxTemperature + '℃' : 'N/A'}">N/A</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">최저 기온</div>
+                    <div class="value" th:text="${weatherList != null and #lists.size(weatherList) > 0 ? 
+                        weatherList[0].minTemperature + '℃' : 'N/A'}">N/A</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">강수일</div>
+                    <div class="value"
+                        th:text="${weatherList != null ? 
+                        #lists.size(weatherList.?[precipitation != null and precipitation != '' and precipitation != '0']) : 0}">0
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-message" th:classappend="${code == 200 ? 'status-success' : 'status-error'}">
+            <span th:text="${message}">데이터 로드 중...</span>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>📅 일시</th>
+                        <th>🌡️ 평균기온</th>
+                        <th>🔥 최고기온</th>
+                        <th>⏰ 최고시각</th>
+                        <th>❄️ 최저기온</th>
+                        <th>⏰ 최저시각</th>
+                        <th>📊 일교차</th>
+                        <th>💧 강수량</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="weather, iterStat : ${weatherList}" th:if="${weatherList != null}">
+                        <td th:text="${weather.date}">2023-01-01</td>
+                        <td>
+                            <span class="temperature temp-avg"
+                                th:text="${weather.averageTemperature} + '℃'">15.2℃</span>
+                        </td>
+                        <td>
+                            <span class="temperature temp-high" th:text="${weather.maxTemperature} + '℃'">22.5℃</span>
+                        </td>
+                        <td th:text="${weather.maxTemperatureTime}">14:30</td>
+                        <td>
+                            <span class="temperature temp-low" th:text="${weather.minTemperature} + '℃'">8.1℃</span>
+                        </td>
+                        <td th:text="${weather.minTemperatureTime}">06:00</td>
+                        <td th:text="${weather.dailyTemperatureRange} + '℃'">14.4℃</td>
+                        <td>
+                            <span
+                                th:classappend="${weather.precipitation != null and weather.precipitation != '' and weather.precipitation != '0' ? 'precipitation rain' : 'precipitation no-rain'}"
+                                th:text="${weather.precipitation != null and weather.precipitation != '' ? weather.precipitation + 'mm' : '0mm'}">0mm</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${weatherList == null or #lists.isEmpty(weatherList)}">
+                        <td colspan="8" class="no-data">
+                            📭 데이터가 없습니다.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; padding: 30px;">
+            <button class="refresh-btn" onclick="location.reload()">
+                🔄 새로고침
+            </button>
+        </div>
+    </div>
+</body>
+
+</html>

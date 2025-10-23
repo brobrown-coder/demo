@@ -1,13 +1,18 @@
-package com.example.demo.user.domain;
+package com.example.demo.member.domain;
 
-public class UserEntity {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    private Long id;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class MemberDTO {
     private String passengerId;
     private String survived;
     private String pclass;
     private String name;
-    private String sex;
+    private String gender;
     private String age;
     private String sibSp;
     private String parch;

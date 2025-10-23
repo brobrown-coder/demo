@@ -20,5 +20,4 @@ public class UserDTO {
     private String fare;
     private String cabin;
     private String embarked;
-
 }

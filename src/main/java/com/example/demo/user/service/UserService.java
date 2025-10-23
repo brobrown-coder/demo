@@ -1,20 +1,22 @@
 package com.example.demo.user.service;
 
-import com.example.demo.user.domain.UserDTO;
-import com.example.demo.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
+import com.example.demo.common.domain.Messenger;
+import com.example.demo.user.domain.UserDTO;
 
-    private final UserRepository userRepository;
+public interface UserService {
 
-    public void printPassengers(List<UserDTO> passengers) {
-        userRepository.print(passengers);
-    }
+    Messenger save(UserDTO userDTO);
+
+    Messenger update(UserDTO userDTO);
+
+    Messenger delete(UserDTO userDTO);
+
+    Messenger findById(String id);
+
+    Messenger findAll();
+
+    Messenger saveAll(List<UserDTO> userDTOs);
 
 }

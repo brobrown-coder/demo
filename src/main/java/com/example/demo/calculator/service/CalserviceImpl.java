@@ -1,12 +1,8 @@
-package com.example.demo.calculator.controller;
+package com.example.demo.calculator.service;
 
-import org.springframework.stereotype.Controller;
-
-import com.example.demo.calculator.service.Calservice;
 import com.example.demo.calculator.domain.CalDTO;
 
-@Controller
-public class CalController implements Calservice {
+public class CalserviceImpl implements Calservice {
 
     @Override
     public int add(CalDTO calDTO) {
@@ -31,5 +27,6 @@ public class CalController implements Calservice {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'div'");
     }
+
 
 }

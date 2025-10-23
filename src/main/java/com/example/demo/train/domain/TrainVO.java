@@ -1,8 +1,7 @@
 package com.example.demo.train.domain;
 
-import lombok.Getter;
 
-@Getter
+
 public class TrainVO {
     private String averageTemperature;
     private String maxTemperature;

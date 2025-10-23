@@ -1,12 +1,12 @@
-package com.example.demo.calculator.controller;
+package com.example.demo.calculator.repository;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 
-import com.example.demo.calculator.service.Calservice;
 import com.example.demo.calculator.domain.CalDTO;
+import com.example.demo.calculator.service.Calservice;
 
-@Controller
-public class CalController implements Calservice {
+@Repository
+public class CalculatorRepository implements Calservice {
 
     @Override
     public int add(CalDTO calDTO) {

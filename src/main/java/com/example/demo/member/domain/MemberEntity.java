@@ -1,13 +1,11 @@
-package com.example.demo.user.domain;
+package com.example.demo.member.domain;
 
-public class UserEntity {
-
-    private Long id;
+public class MemberEntity {
     private String passengerId;
     private String survived;
     private String pclass;
     private String name;
-    private String sex;
+    private String gender;
     private String age;
     private String sibSp;
     private String parch;
