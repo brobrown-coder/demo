@@ -2,7 +2,6 @@ package com.example.demo.user.repository;
 
 import com.example.demo.common.domain.Messenger;
 import com.example.demo.user.domain.UserDTO;
-import com.example.demo.user.service.UserService;
 
 import org.springframework.stereotype.Repository;
 
