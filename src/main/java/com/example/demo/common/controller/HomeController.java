@@ -1,54 +1,43 @@
 package com.example.demo.common.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.example.demo.common.domain.Messenger;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import com.example.demo.common.domain.Messenger;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Home", description = "홈 컨트롤러 API")
+@RestController
 public class HomeController {
 
-	@GetMapping("/")
-	public String homePage(Model model) {
-		// Messenger 데이터 생성 및 모델에 추가
-		List<Messenger> messages = new ArrayList<>();
-		messages.add(new Messenger(1, "환영합니다! 웹사이트에 오신 것을 환영합니다."));
-		messages.add(new Messenger(2, "새로운 기능이 업데이트되었습니다."));
-		messages.add(new Messenger(3, "계산기 기능을 이용해보세요."));
+    @Operation(summary = "홈 페이지", description = "애플리케이션의 홈 엔드포인트를 반환합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 응답을 반환했습니다.")
+    })
+    @GetMapping("/")
+    public ResponseEntity<Messenger> home() {
+        return ResponseEntity.ok(
+                Messenger.builder()
+                        .code(200)
+                        .message("success")
+                        .build());
+    }
 
-		model.addAttribute("messages", messages);
-		return "index"; // resolves to templates/index.html via Thymeleaf
-	}
-
-	@GetMapping("/cal")
-	public String calPage() {
-		return "contents/calculator/cal"; // resolves to templates/cal.html
-	}
-
-	@GetMapping("/contents/calculator/plus")
-	public String plusPage() {
-		return "contents/calculator/plus"; // resolves to templates/cal.html
-	}
-
-	@GetMapping("/contents/calculator/minus")
-	public String minusPage() {
-		return "contents/calculator/minus"; // resolves to templates/cal.html
-	}
-
-	@GetMapping("/contents/calculator/gob")
-	public String gobPage() {
-		return "contents/calculator/gob"; // resolves to templates/cal.html
-	}
-
-	@GetMapping("/contents/calculator/nanum")
-	public String nanumPage() {
-		return "contents/calculator/nanum"; // resolves to templates/cal.html
-	}
-
-	@GetMapping("/login")
-	public String loginPage() {
-		return "auth/login"; // resolves to templates/auth/login.html
-	}
+    @Operation(summary = "헬스 체크", description = "애플리케이션의 상태를 확인합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "애플리케이션이 정상적으로 작동 중입니다.")
+    })
+    @GetMapping("/health")
+    public ResponseEntity<Messenger> health() {
+        return ResponseEntity.ok(
+                Messenger.builder()
+                        .code(200)
+                        .message("success")
+                        .build());
+    }
 }
