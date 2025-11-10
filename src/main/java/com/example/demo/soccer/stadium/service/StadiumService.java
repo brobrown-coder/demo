@@ -18,5 +18,7 @@ public interface StadiumService {
 
     Messenger saveAll(List<StadiumDTO> stadiumDTOs);
 
+    Messenger findByKeyword(String keyword);
+
 }
 

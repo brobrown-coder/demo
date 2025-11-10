@@ -52,4 +52,13 @@ public class PlayerRepository {
                 .build();
     }
 
+    public Messenger findByKeyword(String keyword) {
+        System.out.println("=== PlayerRepository: 검색어로 선수 검색 ===");
+        System.out.println("검색어: " + keyword);
+        return Messenger.builder()
+                .code(200)
+                .message("Player search by keyword: " + keyword)
+                .build();
+    }
+
 }

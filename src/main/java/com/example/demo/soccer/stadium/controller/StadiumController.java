@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class StadiumController {
     private final StadiumService stadiumService;
 
-
     @PostMapping("/save")
     public ResponseEntity<Messenger> save(@RequestBody StadiumDTO stadiumDTO) {
         return ResponseEntity.ok(stadiumService.save(stadiumDTO));
@@ -56,4 +55,3 @@ public class StadiumController {
         return ResponseEntity.ok(stadiumService.findAll());
     }
 }
-

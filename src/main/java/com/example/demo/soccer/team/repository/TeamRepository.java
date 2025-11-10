@@ -52,5 +52,14 @@ public class TeamRepository {
                 .build();
     }
 
+    public Messenger findByKeyword(String keyword) {
+        System.out.println("=== TeamRepository: 검색어로 팀 검색 ===");
+        System.out.println("검색어: " + keyword);
+        return Messenger.builder()
+                .code(200)
+                .message("Team search by keyword: " + keyword)
+                .build();
+    }
+
 }
 

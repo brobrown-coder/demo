@@ -47,4 +47,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleRepository.save(scheduleDTO);
     }
 
+    @Override
+    public Messenger findByKeyword(String keyword) {
+        return scheduleRepository.findByKeyword(keyword);
+    }
+
 }

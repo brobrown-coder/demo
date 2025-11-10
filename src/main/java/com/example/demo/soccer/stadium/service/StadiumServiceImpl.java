@@ -47,5 +47,10 @@ public class StadiumServiceImpl implements StadiumService {
         return stadiumRepository.save(stadiumDTO);
     }
 
+    @Override
+    public Messenger findByKeyword(String keyword) {
+        return stadiumRepository.findByKeyword(keyword);
+    }
+
 }
 

@@ -47,4 +47,9 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepository.save(playerDTO);
     }
 
+    @Override
+    public Messenger findByKeyword(String keyword) {
+        return playerRepository.findByKeyword(keyword);
+    }
+
 }

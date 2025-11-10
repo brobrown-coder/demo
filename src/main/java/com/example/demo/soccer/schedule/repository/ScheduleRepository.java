@@ -52,4 +52,13 @@ public class ScheduleRepository {
                 .build();
     }
 
+    public Messenger findByKeyword(String keyword) {
+        System.out.println("=== ScheduleRepository: 검색어로 일정 검색 ===");
+        System.out.println("검색어: " + keyword);
+        return Messenger.builder()
+                .code(200)
+                .message("Schedule search by keyword: " + keyword)
+                .build();
+    }
+
 }

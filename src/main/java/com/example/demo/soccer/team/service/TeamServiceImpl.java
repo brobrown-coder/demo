@@ -47,5 +47,10 @@ public class TeamServiceImpl implements TeamService {
         return teamRepository.save(teamDTO);
     }
 
+    @Override
+    public Messenger findByKeyword(String keyword) {
+        return teamRepository.findByKeyword(keyword);
+    }
+
 }
 

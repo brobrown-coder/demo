@@ -18,6 +18,12 @@ public interface ScheduleService {
 
     Messenger saveAll(List<ScheduleDTO> scheduleDTOs);
 
+    Messenger findByKeyword(String keyword);
+
 }
+
+
+
+
 
 

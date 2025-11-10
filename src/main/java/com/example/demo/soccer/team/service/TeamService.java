@@ -18,5 +18,7 @@ public interface TeamService {
 
     Messenger saveAll(List<TeamDTO> teamDTOs);
 
+    Messenger findByKeyword(String keyword);
+
 }
 

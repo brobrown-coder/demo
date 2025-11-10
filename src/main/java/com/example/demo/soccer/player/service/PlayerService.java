@@ -18,4 +18,6 @@ public interface PlayerService {
 
     Messenger saveAll(List<PlayerDTO> playerDTOs);
 
+    Messenger findByKeyword(String keyword);
+
 }

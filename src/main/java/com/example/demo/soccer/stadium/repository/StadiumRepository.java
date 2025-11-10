@@ -52,5 +52,14 @@ public class StadiumRepository {
                 .build();
     }
 
+    public Messenger findByKeyword(String keyword) {
+        System.out.println("=== StadiumRepository: 검색어로 경기장 검색 ===");
+        System.out.println("검색어: " + keyword);
+        return Messenger.builder()
+                .code(200)
+                .message("Stadium search by keyword: " + keyword)
+                .build();
+    }
+
 }
 
